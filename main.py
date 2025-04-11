@@ -7,8 +7,10 @@ from torchvision import datasets, transforms
 from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
-    # Create a transform function
+    # Configurar device (CPU o GPU si está disponible)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Transformaciones para train y test
     transform_train = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.RandomResizedCrop(224),
@@ -23,20 +25,21 @@ if __name__ == '__main__':
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
-    train_dir = 'train'
-    test_dir = 'test'
+    # Cargar datasets
+    train_dir = 'data/train'
+    test_dir = 'data/test'
     train_dataset = datasets.ImageFolder(train_dir, transform_train)
     test_dataset = datasets.ImageFolder(test_dir, transform_test)
 
     train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=5, shuffle=True, num_workers=0)
     test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=5, shuffle=False, num_workers=0)
 
+    # Preparar el modelo
     model = torchvision.models.resnet18(pretrained=True)
     num_features = model.fc.in_features
-    print(num_features)
-
     model.fc = torch.nn.Linear(num_features, 2)
-    model = model.to('cuda:0')
+    model = model.to(device)
+
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
@@ -46,7 +49,7 @@ if __name__ == '__main__':
     test_accuracy = []
 
     num_epochs = 2
-    start_Time = time.time()
+    start_time = time.time()
 
     for epoch in range(num_epochs):
         print(f"Epoch {epoch+1} running")
