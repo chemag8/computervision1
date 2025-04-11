@@ -48,14 +48,14 @@ if __name__ == '__main__':
     start_Time = time.time()
 
     for epoch in range(num_epochs):
-        print("Epoch {} running".format(epoch))
+        print(f"Epoch {epoch+1} running")
         model.train()
         running_loss = 0
         running_corrects = 0
 
         for i, (inputs, labels) in enumerate(train_dataloader):
-            inputs = inputs.to('cuda:0')
-            labels = labels.to('cuda:0')
+            inputs = inputs.to(device)
+            labels = labels.to(device)
 
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -68,37 +68,41 @@ if __name__ == '__main__':
             running_loss += loss.item()
             running_corrects += torch.sum(preds == labels.data).item()
 
-            epoch_loss = running_loss / len(train_dataset)
-            epoch_acc = running_corrects / len(train_dataset) + 100.
+        epoch_loss = running_loss / len(train_dataset)
+        epoch_acc = 100. * running_corrects / len(train_dataset)
 
-            train_loss.append(epoch_loss)
-            train_accuracy.append(epoch_acc)
+        train_loss.append(epoch_loss)
+        train_accuracy.append(epoch_acc)
 
-            # Print progress
-            print('[Train # {}] Loss: {:.4f} Acc: {:.4f}'.format(
-                i, epoch_loss, epoch_acc))
+        print('[Train] Loss: {:.4f} Acc: {:.2f}%'.format(epoch_loss, epoch_acc))
 
-            model.eval()
-            with torch.no_grad():
-                running_loss = 0
-                running_corrects = 0
+        # ---- Validación después del epoch ----
+        model.eval()
+        running_loss = 0
+        running_corrects = 0
 
-                for inputs, labels in test_dataloader:
-                    inputs = inputs.to('cuda:0')
-                    labels = labels.to('cuda:0')
+        with torch.no_grad():
+            for inputs, labels in test_dataloader:
+                inputs = inputs.to(device)
+                labels = labels.to(device)
 
-                    outputs = model(inputs)
-                    _, preds = torch.max(outputs, 1)
-                    loss = criterion(outputs, labels)
+                outputs = model(inputs)
+                _, preds = torch.max(outputs, 1)
+                loss = criterion(outputs, labels)
 
-                    running_loss += loss.item()
-                    running_corrects += torch.sum(preds == labels.data).item()
+                running_loss += loss.item()
+                running_corrects += torch.sum(preds == labels.data).item()
 
-                epoch_loss = running_loss / len(test_dataset)
-                epoch_acc = running_corrects / len(test_dataset) + 100.
+        epoch_loss = running_loss / len(test_dataset)
+        epoch_acc = 100. * running_corrects / len(test_dataset)
 
-                test_loss.append(epoch_loss)
-                test_accuracy.append(epoch_acc)
+        test_loss.append(epoch_loss)
+        test_accuracy.append(epoch_acc)
 
-                print('[Test # {}] Loss: {:.4f} Acc: {:.4f}'.format(
-                    i, epoch_loss, epoch_acc)) 
+        print('[Test] Loss: {:.4f} Acc: {:.2f}%'.format(epoch_loss, epoch_acc))
+
+    # Guardar el modelo entrenado
+    torch.save(model.state_dict(), 'resnet18_finetuned.pth')
+    print("\nModelo guardado como resnet18_finetuned.pth 🧠💾")
+
+    print("\nEntrenamiento finalizado en {:.2f} segundos".format(time.time() - start_time))
