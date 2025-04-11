@@ -35,7 +35,7 @@ if __name__ == '__main__':
     print(num_features)
 
     model.fc = torch.nn.Linear(num_features, 2)
-    model = model.to('cpu')
+    model = model.to('cuda')
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
@@ -54,8 +54,8 @@ if __name__ == '__main__':
         running_corrects = 0
 
         for i, (inputs, labels) in enumerate(train_dataloader):
-            inputs = inputs.to('cpu')
-            labels = labels.to('cpu')
+            inputs = inputs.to('cuda')
+            labels = labels.to('cuda')
 
             optimizer.zero_grad()
             outputs = model(inputs)
