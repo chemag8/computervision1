@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
     # Create a transform function
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     transform_train = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.RandomResizedCrop(224),
