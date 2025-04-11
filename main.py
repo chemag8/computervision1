@@ -26,8 +26,8 @@ if __name__ == '__main__':
     ])
 
     # Cargar datasets
-    train_dir = 'data/train'
-    test_dir = 'data/test'
+    train_dir = 'train'
+    test_dir = 'test'
     train_dataset = datasets.ImageFolder(train_dir, transform_train)
     test_dataset = datasets.ImageFolder(test_dir, transform_test)
 
