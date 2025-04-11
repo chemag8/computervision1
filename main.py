@@ -50,7 +50,7 @@ if __name__ == '__main__':
     test_loss = []
     test_accuracy = []
 
-    num_epochs = 50
+    num_epochs = 2
     start_time = time.time()
 
     for epoch in range(num_epochs):
@@ -111,17 +111,18 @@ if __name__ == '__main__':
     torch.save(model.state_dict(), 'resnet18_finetuned.pth')
     print("\nModelo guardado como resnet18_finetuned.pth 🧠💾")
 
-    # === GRAFICAR LOSS ===
+    # === GRAFICAR LOSS (escala logarítmica en el eje Y) ===
     plt.figure()
     plt.plot(train_loss, label='Train Loss')
     plt.plot(test_loss, label='Test Loss')
-    plt.title('Loss por época')
+    plt.title('Loss por época (escala log)')
     plt.xlabel('Época')
     plt.ylabel('Loss')
+    plt.yscale('log')
     plt.legend()
     plt.grid(True)
     plt.savefig('loss_curve.png')
-    print("Gráfico de pérdida guardado como loss_curve.png")
+    print("Gráfico de pérdida (escala logarítmica) guardado como loss_curve.png")
 
     # === GRAFICAR ACCURACY ===
     plt.figure()
