@@ -4,6 +4,7 @@ import time
 import numpy as np
 
 from torchvision import datasets, transforms
+from torchvision.models import resnet18, ResNet18_Weights
 from matplotlib import pyplot as plt
 
 if __name__ == '__main__':
@@ -34,8 +35,9 @@ if __name__ == '__main__':
     train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=5, shuffle=True, num_workers=0)
     test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=5, shuffle=False, num_workers=0)
 
-    # Preparar el modelo
-    model = torchvision.models.resnet18(pretrained=True)
+    # Preparar el modelo con pesos actualizados
+    weights = ResNet18_Weights.DEFAULT
+    model = resnet18(weights=weights)
     num_features = model.fc.in_features
     model.fc = torch.nn.Linear(num_features, 2)
     model = model.to(device)
