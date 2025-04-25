@@ -2,7 +2,7 @@ import torchvision
 import torch
 import time
 import numpy as np
-
+from matplotlib.ticker import ScalarFormatter
 from torchvision import datasets, transforms
 from torchvision.models import resnet18, ResNet18_Weights
 from matplotlib import pyplot as plt
@@ -113,16 +113,23 @@ if __name__ == '__main__':
 
     # === GRAFICAR LOSS (escala logarítmica en el eje Y) ===
     plt.figure()
-    plt.plot(train_loss, label='Train Loss')
-    plt.plot(test_loss, label='Test Loss')
-    plt.title('Loss por época (escala log)')
+    plt.plot(train_loss, label='Log Loss - Entrenamiento')
+    plt.plot(test_loss, label='Log Loss - Validación')
+    plt.title('Curva de Log Loss por Época (escala logarítmica con decimales)')
     plt.xlabel('Época')
-    plt.ylabel('Loss')
+    plt.ylabel('Log Loss')
     plt.yscale('log')
+
+    # 🎯 Aquí la magia para poner decimales en vez de notación científica:
+    formatter = ScalarFormatter()
+    formatter.set_scientific(False)
+    plt.gca().yaxis.set_major_formatter(formatter)
+
     plt.legend()
-    plt.grid(True)
-    plt.savefig('loss_curve.png')
-    print("Gráfico de pérdida (escala logarítmica) guardado como loss_curve.png")
+    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    plt.tight_layout()
+    plt.savefig('log_loss_curve_decimal_ticks.png')
+    print("Gráfico con escala log y ticks decimales guardado como log_loss_curve_decimal_ticks.png")
 
     # === GRAFICAR ACCURACY ===
     plt.figure()
