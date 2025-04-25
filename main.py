@@ -129,7 +129,7 @@ if __name__ == '__main__':
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)
     plt.tight_layout()
     plt.savefig('log_loss_curve_decimal_ticks.png')
-    print("Gráfico con escala log y ticks decimales guardado como log_loss_curve_decimal_ticks.png")
+    print("Gráfico con escala log y ticks decimales guardado como log_loss_curve.png")
 
     # === GRAFICAR ACCURACY ===
     plt.figure()
