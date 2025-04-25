@@ -9,7 +9,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=NUM_EPOCHS):
+def train_model(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=10):
     train_loss_history = []
     val_loss_history = []
     train_acc_history = []
