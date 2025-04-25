@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader # para cargar los datos en batches
 import torchvision.models as models # modelos preentrenados de pytorch
 import torch.nn as nn # para definir la red neuronal
 import torch.optim as optim # para optimizar la red neuronal
-
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 
