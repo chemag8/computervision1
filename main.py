@@ -137,7 +137,7 @@ if __name__ == '__main__':
     plt.plot(test_accuracy, label='Test Accuracy')
     plt.title('Precisión por época')
     plt.xlabel('Epoch')
-    plt.ylabel('Precisión (%)')
+    plt.ylabel('Accuracy (%)')
     plt.legend()
     plt.grid(True)
     plt.savefig('accuracy_curve.png')
