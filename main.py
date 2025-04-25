@@ -113,8 +113,8 @@ if __name__ == '__main__':
 
     # === GRAFICAR LOSS (escala logarítmica en el eje Y) ===
     plt.figure()
-    plt.plot(train_loss, label='Log Loss - Entrenamiento')
-    plt.plot(test_loss, label='Log Loss - Validación')
+    plt.plot(train_loss, label='Train Log Loss')
+    plt.plot(test_loss, label='Test Log Loss')
     plt.title('Curva de Log Loss por Época (escala logarítmica con decimales)')
     plt.xlabel('Época')
     plt.ylabel('Log Loss')
