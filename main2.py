@@ -114,7 +114,7 @@ if __name__ == '__main__':
   criterion = nn.CrossEntropyLoss() 
   
   # Optimizador: solo entrenamos la capa final
-  optimizer = optim.Adam(model.fc.parameters(), lr=0.0001) 
+  optimizer = optim.Adam(model.fc.parameters(), lr=0.00001) 
   
   # Numero de épocas
   NUM_EPOCHS = 50
