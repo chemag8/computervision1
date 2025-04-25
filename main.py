@@ -116,7 +116,7 @@ if __name__ == '__main__':
     plt.plot(train_loss, label='Train Log Loss')
     plt.plot(test_loss, label='Test Log Loss')
     plt.title('Curva de Log Loss por Época (escala logarítmica con decimales)')
-    plt.xlabel('Época')
+    plt.xlabel('Epoch')
     plt.ylabel('Log Loss')
     plt.yscale('log')
 
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     plt.plot(train_accuracy, label='Train Accuracy')
     plt.plot(test_accuracy, label='Test Accuracy')
     plt.title('Precisión por época')
-    plt.xlabel('Época')
+    plt.xlabel('Epoch')
     plt.ylabel('Precisión (%)')
     plt.legend()
     plt.grid(True)
