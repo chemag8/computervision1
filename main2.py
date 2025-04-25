@@ -56,7 +56,9 @@ if __name__ == '__main__':
   optimizer = optim.Adam(model.fc.parameters(), lr=0.0001) 
   
   # Numero de épocas
-  NUM_EPOCHS = 30
+  NUM_EPOCHS = 50
+
+  start_time = time.time()
 
   train_loss, val_loss, train_acc, val_acc = train_model(
       model, train_loader, test_loader, criterion, optimizer, device)
@@ -70,7 +72,8 @@ if __name__ == '__main__':
   plt.title('Evolución de la Pérdida')
   plt.legend()
   plt.grid(True)
-  plt.show()
+  plt.savefig('log_loss_curve.png')
+  print("Gráfico con escala log y ticks decimales guardado como log_loss_curve.png")
 
     #Grafica de Accuracy
   plt.figure(figsize=(10,5))
@@ -81,7 +84,8 @@ if __name__ == '__main__':
   plt.title('Evolución de la Precisión')
   plt.legend()
   plt.grid(True)
-  plt.show()
+  plt.savefig('accuracy_curve.png')
+  print("Gráfico de precisión guardado como accuracy_curve.png")
 
 def train_model(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=NUM_EPOCHS):
     train_loss_history = []
