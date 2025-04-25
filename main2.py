@@ -122,7 +122,7 @@ if __name__ == '__main__':
   start_time = time.time()
 
   train_loss, val_loss, train_acc, val_acc = train_model(
-      model, train_loader, test_loader, criterion, optimizer, device)
+      model, train_loader, test_loader, criterion, optimizer, device, NUM_EPOCHS)
 
   #Grafica de Loss
   plt.figure(figsize=(10,5))
