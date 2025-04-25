@@ -95,7 +95,9 @@ if __name__ == '__main__':
   test_loader = DataLoader(test_data, batch_size=32, shuffle=False)
 
   # Cargar modelo ResNet18 preentrenado
-  model = models.resnet18(pretrained=True) # cargar el modelo preentrenado, la arquitectura es ResNet18 e incluye una capa final de 1000 neuronas
+  weights = ResNet18_Weights.DEFAULT
+  model = models.resnet18(weights=weights)
+  #model = models.resnet18(pretrained=True) # cargar el modelo preentrenado, la arquitectura es ResNet18 e incluye una capa final de 1000 neuronas
   
   # Congelo todos los pesos, solo se entrenará la capa que se añadirá al final
   for param in model.parameters():
