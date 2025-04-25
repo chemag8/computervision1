@@ -133,8 +133,8 @@ if __name__ == '__main__':
   plt.title('Evolución de la Pérdida')
   plt.legend()
   plt.grid(True)
-  plt.savefig('log_loss_curve.png')
-  print("Gráfico con escala log y ticks decimales guardado como log_loss_curve.png")
+  plt.savefig('log_loss_curve2.png')
+  print("Gráfico con escala log y ticks decimales guardado como log_loss_curve2.png")
 
     #Grafica de Accuracy
   plt.figure(figsize=(10,5))
@@ -145,8 +145,8 @@ if __name__ == '__main__':
   plt.title('Evolución de la Precisión')
   plt.legend()
   plt.grid(True)
-  plt.savefig('accuracy_curve.png')
-  print("Gráfico de precisión guardado como accuracy_curve.png")
+  plt.savefig('accuracy_curve2.png')
+  print("Gráfico de precisión guardado como accuracy_curve2.png")
 
 
 
