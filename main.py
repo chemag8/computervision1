@@ -43,7 +43,7 @@ if __name__ == '__main__':
     model = model.to(device)
 
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.00001)
 
     train_loss = []
     train_accuracy = []
