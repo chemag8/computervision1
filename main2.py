@@ -9,6 +9,67 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
+def train_model(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=NUM_EPOCHS):
+    train_loss_history = []
+    val_loss_history = []
+    train_acc_history = []
+    val_acc_history = []
+
+    for epoch in range(num_epochs):
+        model.train() # Establece el modelo en modo de entrenamiento
+        running_loss = 0.0 
+        running_corrects = 0
+
+        for inputs, labels in train_loader:
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+
+            optimizer.zero_grad() # Reinicia los gradientes
+            outputs = model(inputs) # Propagación hacia adelante
+            loss = criterion(outputs, labels)
+
+            loss.backward() # Propagación hacia atrás
+            optimizer.step() # Actualiza los pesos
+
+            running_loss += loss.item() * inputs.size(0) # Acumula la pérdida
+            _, preds = torch.max(outputs, 1) # Obtiene las predicciones, el índice de la clase con mayor probabilidad
+            running_corrects += torch.sum(preds == labels.data) # Acumula el número de aciertos del lote
+
+        epoch_loss = running_loss / len(train_loader.dataset) # Pérdida media por época, dividiendo por el número total de imágenes
+        epoch_acc = running_corrects.double() / len(train_loader.dataset) # Precisión media por época
+
+        train_loss_history.append(epoch_loss)
+        train_acc_history.append(epoch_acc.item())
+
+        # Evaluación en validación
+        model.eval() # Establece el modelo en modo de evaluación
+        val_loss = 0.0
+        val_corrects = 0
+
+        with torch.no_grad(): # Desactiva los gradientes para la validación y haces mismos calculos que en el entrenamiento menos la propagación hacia atrás
+            for inputs, labels in val_loader:
+                inputs = inputs.to(device)
+                labels = labels.to(device)
+
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+
+                val_loss += loss.item() * inputs.size(0)
+                _, preds = torch.max(outputs, 1)
+                val_corrects += torch.sum(preds == labels.data)
+
+        val_epoch_loss = val_loss / len(val_loader.dataset)
+        val_epoch_acc = val_corrects.double() / len(val_loader.dataset)
+
+        val_loss_history.append(val_epoch_loss)
+        val_acc_history.append(val_epoch_acc.item())
+
+        print(f"Época {epoch+1}/{num_epochs} | "
+              f"Train Loss: {epoch_loss:.4f}, Acc: {epoch_acc:.4f} | "
+              f"Val Loss: {val_epoch_loss:.4f}, Acc: {val_epoch_acc:.4f}")
+
+    return train_loss_history, val_loss_history, train_acc_history, val_acc_history
+
 if __name__ == '__main__':
   # Transformaciones para el conjunto de entrenamiento (con data augmentation)
   train_transforms = transforms.Compose([
@@ -87,66 +148,7 @@ if __name__ == '__main__':
   plt.savefig('accuracy_curve.png')
   print("Gráfico de precisión guardado como accuracy_curve.png")
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=NUM_EPOCHS):
-    train_loss_history = []
-    val_loss_history = []
-    train_acc_history = []
-    val_acc_history = []
 
-    for epoch in range(num_epochs):
-        model.train() # Establece el modelo en modo de entrenamiento
-        running_loss = 0.0 
-        running_corrects = 0
-
-        for inputs, labels in train_loader:
-            inputs = inputs.to(device)
-            labels = labels.to(device)
-
-            optimizer.zero_grad() # Reinicia los gradientes
-            outputs = model(inputs) # Propagación hacia adelante
-            loss = criterion(outputs, labels)
-
-            loss.backward() # Propagación hacia atrás
-            optimizer.step() # Actualiza los pesos
-
-            running_loss += loss.item() * inputs.size(0) # Acumula la pérdida
-            _, preds = torch.max(outputs, 1) # Obtiene las predicciones, el índice de la clase con mayor probabilidad
-            running_corrects += torch.sum(preds == labels.data) # Acumula el número de aciertos del lote
-
-        epoch_loss = running_loss / len(train_loader.dataset) # Pérdida media por época, dividiendo por el número total de imágenes
-        epoch_acc = running_corrects.double() / len(train_loader.dataset) # Precisión media por época
-
-        train_loss_history.append(epoch_loss)
-        train_acc_history.append(epoch_acc.item())
-
-        # Evaluación en validación
-        model.eval() # Establece el modelo en modo de evaluación
-        val_loss = 0.0
-        val_corrects = 0
-
-        with torch.no_grad(): # Desactiva los gradientes para la validación y haces mismos calculos que en el entrenamiento menos la propagación hacia atrás
-            for inputs, labels in val_loader:
-                inputs = inputs.to(device)
-                labels = labels.to(device)
-
-                outputs = model(inputs)
-                loss = criterion(outputs, labels)
-
-                val_loss += loss.item() * inputs.size(0)
-                _, preds = torch.max(outputs, 1)
-                val_corrects += torch.sum(preds == labels.data)
-
-        val_epoch_loss = val_loss / len(val_loader.dataset)
-        val_epoch_acc = val_corrects.double() / len(val_loader.dataset)
-
-        val_loss_history.append(val_epoch_loss)
-        val_acc_history.append(val_epoch_acc.item())
-
-        print(f"Época {epoch+1}/{num_epochs} | "
-              f"Train Loss: {epoch_loss:.4f}, Acc: {epoch_acc:.4f} | "
-              f"Val Loss: {val_epoch_loss:.4f}, Acc: {val_epoch_acc:.4f}")
-
-    return train_loss_history, val_loss_history, train_acc_history, val_acc_history
 
 
 
